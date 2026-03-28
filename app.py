@@ -3,7 +3,6 @@ import random
 import base64
 
 st.set_page_config(page_title="Vesper Academy", page_icon="🌙", layout="centered")
-
 def set_background(image_file):
     try:
         with open(image_file, "rb") as f:
