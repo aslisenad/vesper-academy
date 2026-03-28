@@ -23,7 +23,7 @@ def set_background(image_file):
             position: fixed;
             top: 0; left: 0;
             width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.75);
+            background: rgba(0, 0, 0, 0.65);
             z-index: 0;
             pointer-events: none;
         
