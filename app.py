@@ -1,14 +1,34 @@
 import streamlit as st
 import random
+import base64
 
 st.set_page_config(page_title="Vesper Academy", page_icon="🌙", layout="centered")
+
+def set_background(image_file):
+    try:
+        with open(image_file, "rb") as f:
+            data = base64.b64encode(f.read()).decode()
+        st.markdown(f"""
+        <style>
+        .stApp {{
+            background-image: url("data:image/png;base64,{data}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }}
+        </style>
+        """, unsafe_allow_html=True)
+    except FileNotFoundError:
+        pass
+
+set_background("foto.png")
 
 st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
 html, body, [class*="css"] { font-family: 'Crimson Text', serif; }
 h1, h2, h3 { font-family: 'Cinzel', serif !important; }
-.stApp { background: linear-gradient(135deg, #0d0d1a 0%, #1a0d2e 50%, #0d1a1a 100%); }
 .story-box {
     background: rgba(255,255,255,0.04);
     border: 1px solid rgba(180,150,255,0.2);
