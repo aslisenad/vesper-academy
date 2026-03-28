@@ -17,7 +17,17 @@ def set_background(image_file):
             background-repeat: no-repeat;
             background-attachment: fixed;
         }}
-        </style>
+
+       .stApp::before {{
+            content: "";
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.75);
+            z-index: 0;
+            pointer-events: none;
+        
+         </style>
         """, unsafe_allow_html=True)
     except FileNotFoundError:
         pass
