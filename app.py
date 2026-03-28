@@ -3,6 +3,7 @@ import random
 import base64
 
 st.set_page_config(page_title="Vesper Academy", page_icon="🌙", layout="centered")
+
 def set_background(image_file):
     try:
         with open(image_file, "rb") as f:
@@ -16,17 +17,11 @@ def set_background(image_file):
             background-repeat: no-repeat;
             background-attachment: fixed;
         }}
-
-       .stApp::before {{
-            content: "";
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.65);
-            z-index: 0;
-            pointer-events: none;
-        
-         </style>
+        .stApp > div:first-child {{
+            background: rgba(0, 0, 0, 0.55);
+            min-height: 100vh;
+        }}
+        </style>
         """, unsafe_allow_html=True)
     except FileNotFoundError:
         pass
@@ -236,12 +231,12 @@ elif s["ekran"] == "oyun":
         if st.button(secim["metin"], key=f"sec_{s['bolum']}_{i}", use_container_width=True):
             s["itibar"] += secim["itibar"]
             if secim["sonuc"] == "duello":
-                s["duello_sonrasi"]    = s["bolum"] + 1
-                s["dusman_hp"]         = 18
-                s["dusman_max_hp"]     = 18
-                s["oyuncu_duello_hp"]  = s["hp"]
-                s["log"]               = "Selene sihir çubuğunu kaldırdı. Düello başlıyor!"
-                s["ekran"]             = "duello"
+                s["duello_sonrasi"]   = s["bolum"] + 1
+                s["dusman_hp"]        = 18
+                s["dusman_max_hp"]    = 18
+                s["oyuncu_duello_hp"] = s["hp"]
+                s["log"]              = "Selene sihir çubuğunu kaldırdı. Düello başlıyor!"
+                s["ekran"]            = "duello"
             else:
                 s["log"]   = SONUC_MESAJLARI[secim["sonuc"]]
                 s["bolum"] += 1
@@ -300,7 +295,6 @@ elif s["ekran"] == "duello":
             if st.button(e["etiket"], key=f"d_{i}", use_container_width=True):
                 log = ""
 
-                # Oyuncu hamlesi
                 if e.get("sifa"):
                     iyilesen = min(5, s["max_hp"] - s["oyuncu_duello_hp"])
                     s["oyuncu_duello_hp"] += iyilesen
@@ -313,7 +307,6 @@ elif s["ekran"] == "duello":
                     else:
                         log += f"💨 {e['isim']} ıskaladı!\n"
 
-                # Zafer kontrolü
                 if s["dusman_hp"] <= 0:
                     s["itibar"] += 3
                     s["hp"]    = s["oyuncu_duello_hp"]
@@ -322,12 +315,10 @@ elif s["ekran"] == "duello":
                     s["ekran"] = "sonuc"
                     st.rerun()
 
-                # Düşman hamlesi
                 dusman_hasar = random.randint(2, 4)
                 s["oyuncu_duello_hp"] = max(0, s["oyuncu_duello_hp"] - dusman_hasar)
                 log += f"🌑 Selene karşı saldırdı! {dusman_hasar} hasar aldın."
 
-                # Yenilgi kontrolü
                 if s["oyuncu_duello_hp"] <= 0:
                     s["hp"]    = 1
                     s["log"]   = log + "\n\n💀 Yenildin... Ama bu savaş bitmedi."
@@ -363,6 +354,19 @@ elif s["ekran"] == "bitis":
         </div>
     </div>
     """, unsafe_allow_html=True)
+
+    # Logo
+    try:
+        with open("okullogo.png", "rb") as f:
+            logo_data = base64.b64encode(f.read()).decode()
+        st.markdown(
+            f'<div style="text-align:center;margin:2rem 0;">'
+            f'<img src="data:image/png;base64,{logo_data}" style="width:200px;opacity:0.95;border-radius:16px;">'
+            f'</div>',
+            unsafe_allow_html=True,
+        )
+    except FileNotFoundError:
+        st.warning("okullogo.png bulunamadı.")
 
     st.markdown("<br>", unsafe_allow_html=True)
     if st.button("🔄 Yeniden başla", use_container_width=True):
